@@ -2,6 +2,7 @@ int TAMANHO_CASA=100;
 Peca[] pecas = new Peca[32];
 int[][] tabuleiro = new int[8][8];
 boolean movendo = false;
+int pecaMovida;
 
 void setup(){
   size(1250,950);
@@ -97,7 +98,7 @@ void desenhaPecas(){
       rect(pecas[i].posX*100+255,pecas[i].posY*100+105,40,40);
     }
     else{
-      rect(mouseX,mouseY,40,40);
+      rect(mouseX-20,mouseY-20,40,40);
     }
   }
 }
@@ -112,9 +113,21 @@ void mouseClicked(){
   for(int i=0;i<8;i++){
     for(int j=0;j<8;j++){
       if(detectaMouse((i*TAMANHO_CASA)+225,(j*TAMANHO_CASA)+75,TAMANHO_CASA,TAMANHO_CASA)==1){
-        pecas[tabuleiro[i][j]].posX=mouseX;
-        pecas[tabuleiro[i][j]].posY=mouseY;
-        movendo = !movendo;
+        if(movendo == false){
+          pecas[tabuleiro[i][j]].movendo = true;
+          pecaMovida = tabuleiro[i][j];
+          tabuleiro[i][j] = -1;
+          movendo = true;
+        }
+        else{
+          if(tabuleiro[i][j]==-1){
+            pecas[pecaMovida].movendo = false;
+            pecas[pecaMovida].posX = i;
+            pecas[pecaMovida].posY = j;
+            tabuleiro[i][j] = pecaMovida;
+            movendo = false;
+          }
+        }
       }
     }
   }
