@@ -3,6 +3,7 @@ Peca[] pecas = new Peca[32];
 int[][] tabuleiro = new int[8][8];
 boolean movendo = false;
 int pecaSelecionada;
+int[][] movimentos = new int[64][3];
 PImage pb,pp,rb,rp,Rb,Rp,tb,tp,cb,cp,bb,bp;
 
 void setup(){
@@ -21,6 +22,14 @@ void draw(){
   background(100);
   criacaoTabuleiro();
   desenhaPecas();
+  if(movendo){
+    casasPossiveis();
+  }
+  if(!movendo){
+    for(int i=0;i<64;i++){
+      movimentos[i][2]=0;
+    }
+  }
 }
 
 void criacaoTabuleiro(){
@@ -122,21 +131,30 @@ void mouseClicked(){
     for(int j=0;j<8;j++){
       if(detectaMouse((i*TAMANHO_CASA)+225,(j*TAMANHO_CASA)+75,TAMANHO_CASA,TAMANHO_CASA)==1){
         if(movendo == false){
-          pecas[tabuleiro[i][j]].movendo = true;
-          pecaSelecionada = tabuleiro[i][j];
-          tabuleiro[i][j] = -1;
-          movendo = true;
+          if(tabuleiro[i][j]!=-1){
+            pecas[tabuleiro[i][j]].movendo = true;
+            pecaSelecionada = tabuleiro[i][j];
+            movendo = true;
+            for(int cont=0;cont<64;cont++){
+              movimentos[cont][2]=0;
+            }
+            testaCasa(pecas[pecaSelecionada].nome,pecas[pecaSelecionada].cor,i,j);
+            tabuleiro[i][j] = -1;
+          }
         }
         else{
-          if((tabuleiro[i][j]==-1 || pecas[tabuleiro[i][j]].cor != pecas[pecaSelecionada].cor ) && testaCasa(pecas[pecaSelecionada].nome,pecas[pecaSelecionada].cor,i,j)== true){
-            if(tabuleiro[i][j]!=-1){
-              pecas[tabuleiro[i][j]].tab=false;
+          for(int cont = 0; cont<64;cont++){
+            if(i==movimentos[cont][0] && j==movimentos[cont][1] && movimentos[cont][2]!=0){
+              if(tabuleiro[i][j]!=-1){
+                pecas[tabuleiro[i][j]].tab=false;
+              }
+              pecas[pecaSelecionada].movendo = false;
+              pecas[pecaSelecionada].posX = i;
+              pecas[pecaSelecionada].posY = j;
+              tabuleiro[i][j] = pecaSelecionada;
+              movendo = false;
+              break;
             }
-            pecas[pecaSelecionada].movendo = false;
-            pecas[pecaSelecionada].posX = i;
-            pecas[pecaSelecionada].posY = j;
-            tabuleiro[i][j] = pecaSelecionada;
-            movendo = false;
           }
         }
       }
@@ -159,20 +177,15 @@ void carregarImagens(){
   rp = loadImage("RP.png");
 }
 
-boolean testaCasa(char nome,char cor,int i,int j){
-  if(nome=='p'){
-    
+void casasPossiveis(){
+  for(int i = 0; i<64;i++){
+    if(movimentos[i][2]== 1){
+      fill(50,0,220,100);
+      rect((movimentos[i][0]*TAMANHO_CASA)+225,(movimentos[i][1]*TAMANHO_CASA)+75,100,100);
+    }
+    else if(movimentos[i][2]== 2){
+      fill(200,60,60,100);
+      rect((movimentos[i][0]*TAMANHO_CASA)+225,(movimentos[i][1]*TAMANHO_CASA)+75,100,100);
+    }
   }
-  if(nome=='t'){
-    
-  }
-  if(nome=='c'){
-  }
-  if(nome=='b'){
-  }
-  if(nome=='R'){
-  }
-  if(nome=='r'){
-  }
-  return true;
 }
