@@ -1,9 +1,6 @@
 boolean testaCasa(char nome,char cor,int x,int y){
   if(nome=='p'){
     if(cor == 'p'){
-      movimentos[3][2]= 1;
-      movimentos[3][0]= x;
-      movimentos[3][1]= y;
       if(x-1>=0 && y-1>=0){
         if(tabuleiro[x-1][y-1]!=-1 && pecas[tabuleiro[x-1][y-1]].cor!=pecas[pecaSelecionada].cor){
             movimentos[0][2]= 2;
@@ -21,6 +18,11 @@ boolean testaCasa(char nome,char cor,int x,int y){
           movimentos[1][0]= x;
           movimentos[1][1]= y-1;
         }
+        if(pecas[pecaSelecionada].contMovimentos == 0){
+          movimentos[3][2]= 1;
+          movimentos[3][0]= x;
+          movimentos[3][1]= y-2;
+        }
       }
       else{
         movimentos[1][2]= 0;
@@ -37,9 +39,6 @@ boolean testaCasa(char nome,char cor,int x,int y){
       }
     }
     if(cor == 'b'){
-      movimentos[3][2]= 1;
-      movimentos[3][0]= x;
-      movimentos[3][1]= y;
       if(x-1>=0 && y+1<8){
         if(tabuleiro[x-1][y+1]!=-1 && pecas[tabuleiro[x-1][y+1]].cor!=pecas[pecaSelecionada].cor){
             movimentos[0][2]= 2;
@@ -52,9 +51,14 @@ boolean testaCasa(char nome,char cor,int x,int y){
       }
       if(y+1<8){
         if(tabuleiro[x][y+1]==-1){
-          movimentos[1][2]=1;
+          movimentos[1][2]= 1;
           movimentos[1][0]= x;
           movimentos[1][1]= y+1;
+        }
+        if(pecas[pecaSelecionada].contMovimentos == 0){
+          movimentos[3][2]= 1;
+          movimentos[3][0]= x;
+          movimentos[3][1]= y+2;
         }
       }
       else{
@@ -74,9 +78,6 @@ boolean testaCasa(char nome,char cor,int x,int y){
   }
   if(nome=='t'){
     int contador=1;
-    movimentos[0][0]= x;
-    movimentos[0][1]= y;
-    movimentos[0][2]= 1;
     int tempX = x;
     int tempY = y;
     while(tempX<7){
@@ -159,9 +160,6 @@ boolean testaCasa(char nome,char cor,int x,int y){
     }
   }
   if(nome=='c'){
-    movimentos[0][0]= x;
-    movimentos[0][1]= y;
-    movimentos[0][2]= 1;
     if(y-2>=0){
       if(x-1>=0){
         if(tabuleiro[x-1][y-2]==-1){
@@ -269,9 +267,6 @@ boolean testaCasa(char nome,char cor,int x,int y){
   }
   if(nome=='b'){
     int contador=1;
-    movimentos[0][0]= x;
-    movimentos[0][1]= y;
-    movimentos[0][2]= 1;
     int tempX = x;
     int tempY = y;
     while(tempX<7 && tempY<7){
@@ -457,9 +452,6 @@ boolean testaCasa(char nome,char cor,int x,int y){
   }
   if(nome=='r'){
     int contador=1;
-    movimentos[0][0]= x;
-    movimentos[0][1]= y;
-    movimentos[0][2]= 1;
     int tempX = x;
     int tempY = y;
     while(tempX<7 && tempY<7){
