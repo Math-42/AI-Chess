@@ -3,6 +3,7 @@ Peca[] pecas = new Peca[32];
 int[][] tabuleiro = new int[8][8];
 boolean movendo = false;
 int pecaSelecionada;
+char turno = 'b';
 int[][] movimentos = new int[64][3];
 PImage pb,pp,rb,rp,Rb,Rp,tb,tp,cb,cp,bb,bp;
 
@@ -134,14 +135,16 @@ void mouseClicked(){
       if(detectaMouse((i*TAMANHO_CASA)+225,(j*TAMANHO_CASA)+75,TAMANHO_CASA,TAMANHO_CASA)==1){
         if(movendo == false){
           if(tabuleiro[i][j]!=-1){
-            pecas[tabuleiro[i][j]].movendo = true;
-            pecaSelecionada = tabuleiro[i][j];
-            movendo = true;
-            for(int cont=0;cont<64;cont++){
-              movimentos[cont][2]=0;
+            if(turno==pecas[tabuleiro[i][j]].cor){
+              pecas[tabuleiro[i][j]].movendo = true;
+              pecaSelecionada = tabuleiro[i][j];
+              movendo = true;
+              for(int cont=0;cont<64;cont++){
+                movimentos[cont][2]=0;
+              }
+              testaCasa(pecas[pecaSelecionada].nome,pecas[pecaSelecionada].cor,i,j);
+              tabuleiro[i][j] = -1;
             }
-            testaCasa(pecas[pecaSelecionada].nome,pecas[pecaSelecionada].cor,i,j);
-            tabuleiro[i][j] = -1;
           }
         }
         else{
@@ -150,10 +153,18 @@ void mouseClicked(){
               if(tabuleiro[i][j]!=-1){
                 pecas[tabuleiro[i][j]].tab=false;
               }
+              if(i!=pecas[pecaSelecionada].posX || j!=pecas[pecaSelecionada].posY){
+                pecas[pecaSelecionada].contMovimentos++;
+                if(turno=='b'){
+                  turno='p';
+                }
+                else{
+                  turno='b';
+                }
+              }
               pecas[pecaSelecionada].movendo = false;
               pecas[pecaSelecionada].posX = i;
               pecas[pecaSelecionada].posY = j;
-              pecas[pecaSelecionada].contMovimentos++;
               tabuleiro[i][j] = pecaSelecionada;
               movendo = false;
               break;
